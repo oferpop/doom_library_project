@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8"> <!-- Sets the character encoding for the HTML document -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Ensures proper rendering and touch zooming on mobile devices -->
+    <title>Library - Register</title> <!-- Title of the webpage -->
+
+    <!-- Linking Bootstrap CSS for styling -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Linking custom CSS file for additional styling -->
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Linking Axios library for making HTTP requests -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+    <div class="container"> <!-- Bootstrap container for responsive layout -->
+        <div class="register-container">
+            <h1>Register</h1> <!-- Heading for the registration form -->
+            <form id="register-form"> <!-- Registration form -->
+                <div class="form-group">
+                    <label for="mail">Email</label> <!-- Label for email input -->
+                    <input type="email" id="mail" class="form-control" required> <!-- Email input field -->
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label> <!-- Label for password input -->
+                    <input type="password" id="password" class="form-control" required> <!-- Password input field -->
+                </div>
+                <div class="form-group">
+                    <label for="city">City</label> <!-- Label for city input -->
+                    <input type="text" id="city" class="form-control"> <!-- City input field -->
+                </div>
+                <div class="form-group">
+                    <label for="age">Age</label> <!-- Label for age input -->
+                    <input type="number" id="age" class="form-control"> <!-- Age input field -->
+                </div>
+                <div class="form-group">
+                    <label for="gender">Gender</label> <!-- Label for gender select box -->
+                    <select id="gender" class="form-control"> <!-- Gender select box -->
+                        <option value="">Select</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Register</button> <!-- Submit button for the form -->
+                <p id="error-message" class="error-message">Error registering user</p> <!-- Error message display -->
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const SERVER = 'http://127.0.0.1:5000'; <!-- Define the server URL -->
+
+        // Add event listener to the form to handle the submit event
+        document.getElementById('register-form').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Get form input values
+            const username = document.getElementById('username').value;
+            const mail = document.getElementById('mail').value;
+            const password = document.getElementById('password').value;
+            const city = document.getElementById('city').value;
+            const age = document.getElementById('age').value;
+            const gender = document.getElementById('gender').value;
+
+            // Send POST request to the server to register the user
+            axios.post(`${SERVER}/register`, {
+                username: username,
+                mail: mail,
+                password: password,
+                city: city,
+                age: age,
+                gender: gender
+            })
+                .then(function (response) {
+                    // If registration is successful and token is received
+                    if (response.data.access_token) {
+                        localStorage.setItem('access_token', response.data.access_token); // Store token in localStorage
+                        localStorage.setItem('user_name', mail); // Store user name in localStorage
+                        alert(response.data.message); // Show success message
+                        window.location.href = 'home.html'; // Redirect to home page
+                    } else {
+                        document.getElementById('error-message').style.display = 'block'; // Display error message
+                    }
+                })
+                .catch(function (error) {
+                    document.getElementById('error-message').style.display = 'block'; // Display error message
+                    console.error('Error:', error); // Log error for debugging
+                });
+        });
+    </script>
+</body>
+
+</html>

@@ -127,3 +127,14 @@ Email: oferpop@gmail.com
 Password: ok1505
 Note
 When a customer is deleted, they become inactive.
+
+##CLOUD LINKS 
+FRONTEND:
+http://doomlibrary.netlify.app/
+
+backend
+https://doom-lib-bac.onrender.com/
+
+LOCAL GIT (backend and frontend)
+
+https://github.com/oferpop/doom_library_project
